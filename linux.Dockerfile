@@ -1,5 +1,5 @@
 # escape=`
-FROM lacledeslan/steamcmd:linux as outcast-builder
+FROM lacledeslan/steamcmd:latest as outcast-builder
 
 RUN echo "Downloading JK2MV Dedicated Server from GitHub server" &&`
         mkdir --parents /downloads/jk2mv-dedicated &&`
@@ -44,10 +44,14 @@ RUN useradd --home /app --gid root --system JK2Outcast &&`
 COPY --chown=JK2Outcast:root --from=outcast-builder /downloads/jk2mv-dedicated/base /app/base
 RUN true
 COPY --chown=JK2Outcast:root --from=outcast-builder /downloads/jk2mv-dedicated/linux-amd64 /app
+RUN true
+COPY --chown=JK2Outcast:root dist/ /app/base
 
 RUN chmod +x /app/jk2mvded
 
 WORKDIR /app
+
+USER JK2Outcast
 
 CMD ["/bin/bash"]
 

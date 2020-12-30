@@ -24,7 +24,7 @@ docker pull lacledeslan/gamesvr-jk2outcast
 ### Run Simple, Interactive Server
 
 ```shell
-docker run -it --rm --net=host -v ./base/assets0.pk3:/app/base/assets0.pk3 -v ./base/assets1.pk3:/app/base/assets1.pk3 -v ./base/assets2.pk3:/app/base/assets2.pk3 -v ./base/assets5.pk3:/app/base/assets5.pk3 lacledeslan/gamesvr-jk2outcast ./jk2mvded +set fs_game base +set net_port 28070
+docker run -it --rm -p 207080:207080/tcp -p 207080:207080/udp -v ./base/assets0.pk3:/app/base/assets0.pk3 -v ./base/assets1.pk3:/app/base/assets1.pk3 -v ./base/assets2.pk3:/app/base/assets2.pk3 -v ./base/assets5.pk3:/app/base/assets5.pk3 lacledeslan/gamesvr-jk2outcast ./jk2mvded +exec server.cfg;
 ```
 
 ## Getting Started with Game Servers in Docker
