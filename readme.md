@@ -2,7 +2,7 @@
 
 Star Wars Jedi Knight II: Jedi Outcast is a first and third-person shooter video game, released in 2002 for multiple platforms. A Nintendo Switch and PlayStation 4 ports were released in September 2019.
 
-![Jedi Knight II: Jedi Outcast Banner Image](/.misc/banner.jpg)
+![Jedi Knight II: Jedi Outcast Banner Image](https://raw.githubusercontent.com/LacledesLAN/gamesvr-jk2outcast/main/.misc/banner.jpg)
 
 This repository is maintained by [Laclede's LAN](https://lacledeslan.com). Its contents are intended to be bare-bones and used as a stock server. For an example of building a customized server from this Docker image browse the related child-project [gamesvr-jk2outcast-freeplay](https://github.com/LacledesLAN/gamesvr-jk2outcast-freeplay). If any documentation is unclear or it has any issues please see [CONTRIBUTING.md](./CONTRIBUTING.md).
 
