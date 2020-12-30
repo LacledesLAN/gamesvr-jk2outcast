@@ -1,18 +1,28 @@
 {
     "cSpell.words": [
+        "buildnode",
         "deathmatch",
+        "dockerhub",
         "dockerized",
         "freeplay",
         "gameplay",
         "gamesvr",
+        "ghcr",
+        "git",
         "holocron",
         "holocrons",
+        "hub",
+        "io",
         "jk",
         "jk mvded",
         "laclede",
         "lacledeslan",
         "lightsaber",
         "mvded",
+        "outcast",
+        "qemu",
+        "secrets",
+        "username",
         "ysalamiri"
     ]
 }
