@@ -28,8 +28,8 @@ jobs:
           context: .
           file: ./linux.Dockerfile
           tags: |
-            lacledeslan/gamesvr-jk2outcast-freeplay:latest
-            ghcr.io/lacledeslan/gamesvr-jk2outcast-freeplay:latest
+            lacledeslan/gamesvr-jk2outcast:latest
+            ghcr.io/lacledeslan/gamesvr-jk2outcast:latest
           build-args: |
             BUILDNODE=GitHub (Run Number: ${{ github.run_number }} Run ID: ${{ github.run_id }})
             SOURCE_COMMIT=${{ github.sha }}
