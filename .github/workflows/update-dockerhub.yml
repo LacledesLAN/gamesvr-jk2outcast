@@ -18,4 +18,4 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: lacledeslan/gamesvr-jk2outcast
           short-description: "Star Wars Jedi Knight II: Jedi Outcast Dedicated Server in Docker"
-          readme-filepath: ./README.md
+          readme-filepath: ./readme.md
