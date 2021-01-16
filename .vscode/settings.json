@@ -23,6 +23,7 @@
         "qemu",
         "secrets",
         "username",
+        "xpost",
         "ysalamiri"
     ]
 }
