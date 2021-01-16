@@ -11,7 +11,7 @@ This repository is maintained by [Laclede's LAN](https://lacledeslan.com). Its c
 * This docker image uses the [JK2MV](https://github.com/mvdevs/jk2mv) community-made patch to improve, secure, and modernize the game server.
 * This server requires the addition of content files `assets0.pk3`, `assets1.pk3`, `assets2.pk3`, `assets5.pk3` from the retail version of the game to work.
 
-> All example commands and the VSCode tasks assume there's a `./base/` directory on the docker host that contains the required asset files.
+> All example commands assume there's a `~/jk2-assets/` directory containing the pk3 files. The VSCode tasks assume the files are held in `./base`.
 
 ## Linux
 
@@ -24,7 +24,7 @@ docker pull lacledeslan/gamesvr-jk2outcast
 ### Run Simple, Interactive Server
 
 ```shell
-docker run -it --rm -p 207080:207080/tcp -p 207080:207080/udp -v ./base/assets0.pk3:/app/base/assets0.pk3 -v ./base/assets1.pk3:/app/base/assets1.pk3 -v ./base/assets2.pk3:/app/base/assets2.pk3 -v ./base/assets5.pk3:/app/base/assets5.pk3 lacledeslan/gamesvr-jk2outcast ./jk2mvded +exec server.cfg;
+docker run -it --rm --net=host -v ~/jk2-assets/assets0.pk3:/app/base/assets0.pk3 -v ~/jk2-assets/assets1.pk3:/app/base/assets1.pk3 -v ~/jk2-assets/assets2.pk3:/app/base/assets2.pk3 -v ~/jk2-assets/assets5.pk3:/app/base/assets5.pk3 lacledeslan/gamesvr-jk2outcast ./jk2mvded +exec server.cfg;
 ```
 
 ## Getting Started with Game Servers in Docker
