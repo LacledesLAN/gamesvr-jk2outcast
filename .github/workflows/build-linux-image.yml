@@ -57,4 +57,4 @@ jobs:
         run: docker push ghcr.io/lacledeslan/gamesvr-jk2outcast:latest
       - name: Trigger downstream build of lacledeslan/gamesvr-jk2outcast-freeplay
         if: ${{ github.event_name != 'pull_request' }}
-        run: curl -XPOST -u "${{ secrets.GH_PAT_USERNAME}}:${{secrets.GH_PAT_TOKEN}}" -H "Accept: application/vnd.github.everest-preview+json" -H "Content-Type: application/json" https://api.github.com/repos/lacledeslan/gamesvr-jk2outcast-freeplay/dispatches --data '{"event_type": "build_application"}'
+        run: curl -XPOST -u "${{ secrets.GH_PAT_USERNAME}}:${{secrets.GH_PAT_TOKEN}}" -H "Accept: application/vnd.github.v3+json" -H "Content-Type: application/json" --data '{"event_type": "lacledeslan/gamesvr-jk2outcast updated"}' https://api.github.com/repos/LacledesLAN/gamesvr-jk2outcast-freeplay/dispatches
