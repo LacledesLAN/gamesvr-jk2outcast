@@ -60,5 +60,5 @@ jobs:
         run: |-
           curl -XPOST -u "${{ secrets.GH_PAT_USERNAME }}:${{ secrets.GH_PAT_TOKEN }}" \
           -H "Accept: application/vnd.github.v3+json" -H "Content-Type: application/json" \
-          --data '{"event_type": "lacledeslan/gamesvr-jk2outcast updated", "client_payload": {"Run Number":"${{ github.run_number }}", "Run ID":"${{ github.run_id }}", "Source Commit":"${{ github.sha }}"}}' \
+          --data '{"event_type": "${{ github.repository }} updated", "client_payload": {"Run Number":"${{ github.run_number }}", "Run ID":"${{ github.run_id }}", "Source Commit":"${{ github.sha }}"}}' \
           https://api.github.com/repos/LacledesLAN/gamesvr-jk2outcast-freeplay/dispatches
