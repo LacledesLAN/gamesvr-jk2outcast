@@ -1,13 +1,16 @@
 # escape=`
-FROM lacledeslan/steamcmd:latest as outcast-builder
+FROM debian:buster-slim AS outcast-builder
 
-RUN echo "Downloading JK2MV Dedicated Server from GitHub server" &&`
-        mkdir --parents /downloads/jk2mv-dedicated &&`
-        curl -LJ -o /downloads/jk2mv-dedicated/jk2vm-dedicated.zip https://github.com/mvdevs/jk2mv/releases/download/1.4.1/jk2mv-v1.4.1-dedicated.zip &&`
-    echo "Validating download against last known hash" &&`
-        echo "e314e8bb1f46a42a19e133d6a317a43d5f59e71bf1606d70ad2c40be95c6abba  /downloads/jk2mv-dedicated/jk2vm-dedicated.zip" | sha256sum -c - &&`
-    echo "Extracting JK2MV Dedicated Server files" &&`
-        unzip /downloads/jk2mv-dedicated/jk2vm-dedicated.zip -d /downloads/jk2mv-dedicated;
+RUN apt-get update && apt-get install -y`
+        cmake debhelper devscripts git libsdl2-dev libgl1-mesa-dev libopenal-dev libjpeg-dev libpng-dev zlib1g-dev libminizip-dev
+
+COPY ./sources/jk2mv /jk2mv
+
+# Generate the default dedicated server configurations
+RUN cd /jk2mv/build && ./build-dedicated.sh
+
+# Build the dedicated server binaries
+RUN cd /jk2mv/build/Linux-x86_64-dedicated && make;
 
 #=======================================================================
 
@@ -41,9 +44,9 @@ RUN useradd --home /app --gid root --system JK2Outcast &&`
     chown JK2Outcast:root -R /app;
 
 # `RUN true` lines are work around for https://github.com/moby/moby/issues/36573
-COPY --chown=JK2Outcast:root --from=outcast-builder /downloads/jk2mv-dedicated/base /app/base
+COPY --chown=JK2Outcast:root --from=outcast-builder /jk2mv/build/Linux-x86_64-dedicated/out/Release/base /app/base
 RUN true
-COPY --chown=JK2Outcast:root --from=outcast-builder /downloads/jk2mv-dedicated/linux-amd64 /app
+COPY --chown=JK2Outcast:root --from=outcast-builder /jk2mv/build/Linux-x86_64-dedicated/out/Release /app
 RUN true
 COPY --chown=JK2Outcast:root dist/ /app/base
 

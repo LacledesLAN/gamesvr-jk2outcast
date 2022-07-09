@@ -4,23 +4,33 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build",
-            "type": "shell",
-            "command": "docker pull lacledeslan/steamcmd:latest; docker pull debian:buster-slim; docker build . -f linux.Dockerfile -t lltest/gamesvr-jk2outcast --no-cache --build-arg BUILDNODE=$env:computername;",
-            "group": "build",
-            "problemMatcher": [],
-            "promptOnClose": true
+            "label": "Linux - Build Docker Image",
+            "type": "docker-build",
+            "dependsOn": "Download git submodules",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dockerBuild": {
+                "context": "${workspaceFolder}",
+                "dockerfile": "${workspaceFolder}/linux.Dockerfile",
+                "tag": "ll/gamesvr-jk2outcast",
+                "labels": {
+                    "com.lacledeslan.build-node": "${env:computername}",
+                    "org.opencontainers.image.version": "dirty (work in progress)"
+                }
+            }
         },
         {
             "label": "Build & Run Interactive Server",
             "type": "shell",
             "linux":{
-                "command": "docker run -it --net=host -v ${workspaceFolder}/base/assets0.pk3:/app/base/assets0.pk3 -v ${workspaceFolder}/base/assets1.pk3:/app/base/assets1.pk3 -v ${workspaceFolder}/base/assets2.pk3:/app/base/assets2.pk3 -v ${workspaceFolder}/base/assets5.pk3:/app/base/assets5.pk3 lltest/gamesvr-jk2outcast ./jk2mvded +set fs_game base +set net_port 28070;",
+                "command": "docker run -it --net=host -v ${workspaceFolder}/base/assets0.pk3:/app/base/assets0.pk3 -v ${workspaceFolder}/base/assets1.pk3:/app/base/assets1.pk3 -v ${workspaceFolder}/base/assets2.pk3:/app/base/assets2.pk3 -v ${workspaceFolder}/base/assets5.pk3:/app/base/assets5.pk3 ll/gamesvr-jk2outcast ./jk2mvded +set fs_game base +set net_port 28070;",
             },
             "windows":{
-                "command": "$IP=((Get-WmiObject -Class Win32_NetworkAdapterConfiguration | where {$_.DefaultIPGateway -ne $null}).IPAddress | select-object -first 1); docker run -it -p ${IP}:28070:28070/udp -p ${IP}:28070:28070/tcp -v ${workspaceFolder}/base/assets0.pk3:/app/base/assets0.pk3 -v ${workspaceFolder}/base/assets1.pk3:/app/base/assets1.pk3 -v ${workspaceFolder}/base/assets2.pk3:/app/base/assets2.pk3 -v ${workspaceFolder}/base/assets5.pk3:/app/base/assets5.pk3 --rm lltest/gamesvr-jk2outcast ./jk2mvded +set fs_game base +exec server.cfg;"
+                "command": "$IP=((Get-WmiObject -Class Win32_NetworkAdapterConfiguration | where {$_.DefaultIPGateway -ne $null}).IPAddress | select-object -first 1); docker run -it -p ${IP}:28070:28070/udp -p ${IP}:28070:28070/tcp -v ${workspaceFolder}/base/assets0.pk3:/app/base/assets0.pk3 -v ${workspaceFolder}/base/assets1.pk3:/app/base/assets1.pk3 -v ${workspaceFolder}/base/assets2.pk3:/app/base/assets2.pk3 -v ${workspaceFolder}/base/assets5.pk3:/app/base/assets5.pk3 --rm ll/gamesvr-jk2outcast ./jk2mvded +set fs_game base +exec server.cfg;"
             },
-            "dependsOn": "Build",
+            "dependsOn": "BuiLinux - Build Docker Imageld",
             "group": "build",
             "problemMatcher": [],
             "promptOnClose": true
@@ -28,9 +38,23 @@
         {
             "label": "Build & Shell In",
             "type": "shell",
-            "command": "docker run -it -v ${workspaceFolder}/base/assets0.pk3:/app/base/assets0.pk3 -v ${workspaceFolder}/base/assets1.pk3:/app/base/assets1.pk3 -v ${workspaceFolder}/base/assets2.pk3:/app/base/assets2.pk3 -v ${workspaceFolder}/base/assets5.pk3:/app/base/assets5.pk3 --rm lltest/gamesvr-jk2outcast;",
-            "dependsOn": "Build",
+            "command": "docker run -it -v ${workspaceFolder}/base/assets0.pk3:/app/base/assets0.pk3 -v ${workspaceFolder}/base/assets1.pk3:/app/base/assets1.pk3 -v ${workspaceFolder}/base/assets2.pk3:/app/base/assets2.pk3 -v ${workspaceFolder}/base/assets5.pk3:/app/base/assets5.pk3 --rm ll/gamesvr-jk2outcast;",
+            "dependsOn": "Linux - Build Docker Image",
             "group": "build",
+            "problemMatcher": [],
+            "promptOnClose": true
+        },
+        {
+            "label": "Download git submodules",
+            "type": "shell",
+            "command": "git submodule foreach git pull origin master;",
+            "problemMatcher": [],
+            "promptOnClose": true
+        },
+        {
+            "label": "Update git submodules",
+            "type": "shell",
+            "command": "git submodule update --init --recursive --remote;",
             "problemMatcher": [],
             "promptOnClose": true
         }
