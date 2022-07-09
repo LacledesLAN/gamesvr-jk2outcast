@@ -15,6 +15,8 @@ This repository is maintained by [Laclede's LAN](https://lacledeslan.com). Its c
 
 ## Linux
 
+[![linux/amd64](https://github.com/LacledesLAN/gamesvr-jk2outcast/actions/workflows/build-linux-image.yml/badge.svg)](https://github.com/LacledesLAN/gamesvr-jk2outcast/actions/workflows/build-linux-image.yml)
+
 ### Download
 
 ```shell
