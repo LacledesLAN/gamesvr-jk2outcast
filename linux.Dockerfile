@@ -1,5 +1,5 @@
 # escape=`
-FROM debian:buster-slim AS outcast-builder
+FROM debian:bookworm-slim AS outcast-builder
 
 RUN apt-get update && apt-get install -y`
         cmake debhelper devscripts git libsdl2-dev libgl1-mesa-dev libopenal-dev libjpeg-dev libpng-dev zlib1g-dev libminizip-dev
@@ -14,7 +14,7 @@ RUN cd /jk2mv/build/Linux-x86_64-dedicated && make;
 
 #=======================================================================
 
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 ARG BUILDNODE=unspecified
 ARG SOURCE_COMMIT=unspecified
