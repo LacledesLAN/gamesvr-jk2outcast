@@ -12,11 +12,12 @@ RUN cd /jk2mv/build && ./build-dedicated.sh
 RUN cd /jk2mv/build/Linux-x86_64-dedicated && make;
 
 
-#=======================================================================
+#---------------------------------
 FROM debian:bookworm-slim
 
-ARG BUILD_NODE=unspecified
-ARG GIT_REVISION=unspecified
+ARG BUILD_DATE=unspecified \
+    BUILD_NODE=unspecified \
+    GIT_REVISION=unspecified
 
 HEALTHCHECK NONE
 
@@ -30,23 +31,23 @@ RUN dpkg --add-architecture i386 && \
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
 LABEL architecture="amd64" \
-    com.lacledeslan.build-node=$BUILD_NODE \
-    maintainer="Laclede's LAN <contact@lacledeslan.com>" \
-    org.opencontainers.image.description="Jedi Knight II: Jedi Outcast Dedicated Server" \
-    org.opencontainers.image.revision=$GIT_REVISION \
-    org.opencontainers.image.source="https://github.com/LacledesLAN/gamesvr-jk2outcast" \
-    org.opencontainers.image.vendor="Laclede's LAN"
+      com.lacledeslan.build-node=$BUILD_NODE \
+      maintainer="Laclede's LAN <contact@lacledeslan.com>" \
+      org.opencontainers.image.created="$BUILD_DATE" \
+      org.opencontainers.image.description="Jedi Knight II: Jedi Outcast Dedicated Server" \
+      org.opencontainers.image.revision=$GIT_REVISION \
+      org.opencontainers.image.source="https://github.com/LacledesLAN/gamesvr-jk2outcast" \
+      org.opencontainers.image.vendor="Laclede's LAN"
 
 # Set up Enviornment
 RUN useradd --home /app --gid root --system JK2Outcast && \
     mkdir -p /app && \
     chown JK2Outcast:root -R /app;
 
-# `RUN true` lines are work around for https://github.com/moby/moby/issues/36573
 COPY --chown=JK2Outcast:root --from=outcast-builder /jk2mv/build/Linux-x86_64-dedicated/out/Release/base /app/base
-RUN true
+
 COPY --chown=JK2Outcast:root --from=outcast-builder /jk2mv/build/Linux-x86_64-dedicated/out/Release /app
-RUN true
+
 COPY --chown=JK2Outcast:root dist/ /app/base
 
 RUN chmod +x /app/jk2mvded
