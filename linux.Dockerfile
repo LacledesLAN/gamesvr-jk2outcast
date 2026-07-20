@@ -1,7 +1,6 @@
-# escape=`
 FROM debian:bookworm-slim AS outcast-builder
 
-RUN apt-get update && apt-get install -y`
+RUN apt-get update && apt-get install -y \
         cmake debhelper devscripts git libsdl2-dev libgl1-mesa-dev libopenal-dev libjpeg-dev libpng-dev zlib1g-dev libminizip-dev
 
 COPY ./sources/jk2mv /jk2mv
@@ -12,35 +11,35 @@ RUN cd /jk2mv/build && ./build-dedicated.sh
 # Build the dedicated server binaries
 RUN cd /jk2mv/build/Linux-x86_64-dedicated && make;
 
-#=======================================================================
 
+#=======================================================================
 FROM debian:bookworm-slim
 
-ARG BUILDNODE=unspecified
-ARG SOURCE_COMMIT=unspecified
+ARG BUILD_NODE=unspecified
+ARG GIT_REVISION=unspecified
 
 HEALTHCHECK NONE
 
-RUN dpkg --add-architecture i386 &&`
-    apt-get update && apt-get install -y `
-        locales locales-all &&`
-    apt-get clean &&`
-    echo "LC_ALL=en_US.UTF-8" >> /etc/environment &&`
+RUN dpkg --add-architecture i386 && \
+    apt-get update && apt-get install -y \
+        locales locales-all && \
+    apt-get clean && \
+    echo "LC_ALL=en_US.UTF-8" >> /etc/environment && \
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*;
 
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US.UTF-8 LC_ALL=en_US.UTF-8
 
-LABEL com.lacledeslan.build-node=$BUILDNODE `
-      org.label-schema.schema-version="1.0" `
-      org.label-schema.url="https://github.com/LacledesLAN/README.1ST" `
-      org.label-schema.vcs-ref=$SOURCE_COMMIT `
-      org.label-schema.vendor="Laclede's LAN" `
-      org.label-schema.description="Jedi Knight II: Jedi Outcast Dedicated Server" `
-      org.label-schema.vcs-url="https://github.com/LacledesLAN/gamesvr-jk2outcast"
+LABEL architecture="amd64" \
+    com.lacledeslan.build-node=$BUILD_NODE \
+    maintainer="Laclede's LAN <contact@lacledeslan.com>" \
+    org.opencontainers.image.description="Jedi Knight II: Jedi Outcast Dedicated Server" \
+    org.opencontainers.image.revision=$GIT_REVISION \
+    org.opencontainers.image.source="https://github.com/LacledesLAN/gamesvr-jk2outcast" \
+    org.opencontainers.image.vendor="Laclede's LAN"
 
 # Set up Enviornment
-RUN useradd --home /app --gid root --system JK2Outcast &&`
-    mkdir -p /app &&`
+RUN useradd --home /app --gid root --system JK2Outcast && \
+    mkdir -p /app && \
     chown JK2Outcast:root -R /app;
 
 # `RUN true` lines are work around for https://github.com/moby/moby/issues/36573
